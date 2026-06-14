@@ -1,31 +1,31 @@
 {
   "creations": [
     {
-      "titre": "Robe bébé",
-      "description": "Robe en coton doux, finitions main.",
+      "titre": "sacs",
+      "description": "sacs simili et coton finitions main.",
       "prix": "à partir de 25 €",
-      "image": "",
+      "image": "/images/capture-d-écran-2026-06-14-135916.png",
       "lien": ""
     },
     {
-      "titre": "Jupe",
-      "description": "Petite jupe légère, motif pastel.",
+      "titre": "sacs enfants",
+      "description": "sac à dos coton, coton enduit, velours cottelé",
       "prix": "à partir de 20 €",
-      "image": "",
+      "image": "/images/capture-d-écran-2026-06-14-135841.png",
       "lien": ""
     },
     {
       "titre": "Jeu d'éveil en tissu",
       "description": "Doudou / jouet sensoriel cousu main.",
       "prix": "à partir de 15 €",
-      "image": "",
+      "image": "/images/capture-d-écran-2026-06-14-135638.png",
       "lien": ""
     },
     {
       "titre": "Accessoire bébé",
       "description": "Bavoir, bandeau, petite pièce assortie.",
       "prix": "à partir de 10 €",
-      "image": "",
+      "image": "/images/capture-d-écran-2026-06-14-135722.png",
       "lien": ""
     }
   ]
