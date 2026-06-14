@@ -6,7 +6,7 @@
 
 backend:
   name: github
-  repo: VOTRE-PSEUDO/VOTRE-DEPOT   # ⚠️ à modifier
+  repo: lievremagik37/site-crea-sora   # ⚠️ à modifier
   branch: main
 
 # Dossier où sont stockées les photos téléversées
