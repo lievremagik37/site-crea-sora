@@ -1,0 +1,28 @@
+{
+  "creations": [
+    {
+      "titre": "Robe bébé",
+      "description": "Robe en coton doux, finitions main.",
+      "prix": "à partir de 25 €",
+      "image": ""
+    },
+    {
+      "titre": "Jupe",
+      "description": "Petite jupe légère, motif pastel.",
+      "prix": "à partir de 20 €",
+      "image": ""
+    },
+    {
+      "titre": "Jeu d'éveil en tissu",
+      "description": "Doudou / jouet sensoriel cousu main.",
+      "prix": "à partir de 15 €",
+      "image": ""
+    },
+    {
+      "titre": "Accessoire bébé",
+      "description": "Bavoir, bandeau, petite pièce assortie.",
+      "prix": "à partir de 10 €",
+      "image": ""
+    }
+  ]
+}

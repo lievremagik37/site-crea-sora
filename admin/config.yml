@@ -1,0 +1,36 @@
+# ============================================================
+#  Configuration de l'administration Créa'Sora (Decap CMS)
+#  ⚠️ Remplacez "VOTRE-PSEUDO/VOTRE-DEPOT" par votre dépôt GitHub
+#     (exemple : creasora/site-crea-sora)
+# ============================================================
+
+backend:
+  name: github
+  repo: VOTRE-PSEUDO/VOTRE-DEPOT   # ⚠️ à modifier
+  branch: main
+
+# Dossier où sont stockées les photos téléversées
+media_folder: "images"
+public_folder: "/images"
+
+# Langue de l'interface
+locale: "fr"
+
+collections:
+  - name: "boutique"
+    label: "Créations"
+    files:
+      - name: "creations"
+        label: "Liste des créations"
+        file: "products.json"
+        fields:
+          - label: "Créations"
+            name: "creations"
+            widget: "list"
+            label_singular: "Création"
+            summary: "{{fields.titre}} — {{fields.prix}}"
+            fields:
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Prix", name: "prix", widget: "string", hint: "ex : à partir de 25 €" }
+              - { label: "Photo", name: "image", widget: "image", required: false }
