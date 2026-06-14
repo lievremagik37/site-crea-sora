@@ -6,7 +6,7 @@
 
 backend:
   name: github
-  repo: lievremagik37/site-crea-sora   # ⚠️ à modifier
+  repo: VOTRE-PSEUDO/VOTRE-DEPOT   # ⚠️ à modifier
   branch: main
 
 # Dossier où sont stockées les photos téléversées
@@ -34,3 +34,4 @@ collections:
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Prix", name: "prix", widget: "string", hint: "ex : à partir de 25 €" }
               - { label: "Photo", name: "image", widget: "image", required: false }
+              - { label: "Lien Vinted (si en vente)", name: "lien", widget: "string", required: false, hint: "Collez l'adresse de l'annonce Vinted. Laissez vide si c'est juste un exemple sur commande." }

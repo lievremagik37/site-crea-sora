@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Créa'Sora — Créations couture faites main</title>
-<meta name="description" content="Créa'Sora : vêtements et jeux pour bébé en tissu, créés à la main avec douceur.">
+<meta name="description" content="Créa'Sora : vêtements et jeux pour bébé en tissu, créés à la main. Réalisations et commandes sur mesure.">
 <style>
   /* ===== PALETTE PASTEL — modifiable ici ===== */
   :root{
@@ -38,70 +38,92 @@
     border-bottom:1px solid var(--beige);
   }
   .nav{display:flex;align-items:center;justify-content:space-between;height:68px;}
-  .logo{font-size:1.5rem;font-weight:700;color:var(--rose-fonce);font-style:italic;}
-  .nav ul{display:flex;gap:28px;list-style:none;}
-  .nav ul a{color:var(--texte-doux);font-size:.95rem;transition:color .2s;}
-  .nav ul a:hover{color:var(--rose-fonce);}
-  @media(max-width:640px){.nav ul{display:none;}}
+  .logo{font-size:1.5rem;font-weight:700;color:var(--rose-fonce);font-style:italic;cursor:pointer;}
 
   /* ===== HERO ===== */
   .hero{
     background:linear-gradient(135deg,var(--rose) 0%,var(--lavande) 50%,var(--menthe) 100%);
-    text-align:center;padding:90px 24px 100px;
+    text-align:center;padding:70px 24px 80px;
   }
   .hero h1{font-size:3rem;color:#fff;text-shadow:0 2px 12px rgba(180,140,150,.3);}
   .hero p{font-size:1.2rem;color:#fff;margin-top:18px;max-width:560px;margin-left:auto;margin-right:auto;text-shadow:0 1px 6px rgba(180,140,150,.25);}
-  .btn{
-    display:inline-block;margin-top:34px;padding:14px 36px;
-    background:#fff;color:var(--rose-fonce);border-radius:40px;
-    font-weight:600;box-shadow:0 6px 20px rgba(180,140,150,.25);
-    transition:transform .2s,box-shadow .2s;
+
+  /* ===== ONGLETS ===== */
+  .tabs{
+    display:flex;justify-content:center;gap:8px;flex-wrap:wrap;
+    background:var(--blanc);padding:14px;position:sticky;top:68px;z-index:40;
+    border-bottom:1px solid var(--beige);
   }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(180,140,150,.35);}
+  .tab{
+    border:none;cursor:pointer;font-size:1rem;font-family:inherit;
+    padding:11px 26px;border-radius:40px;background:transparent;color:var(--texte-doux);
+    transition:all .2s;font-weight:600;
+  }
+  .tab:hover{background:var(--creme);color:var(--rose-fonce);}
+  .tab.active{background:var(--rose-fonce);color:#fff;box-shadow:0 4px 14px rgba(232,169,176,.4);}
 
-  /* ===== SECTIONS ===== */
-  section{padding:80px 0;}
+  .panel{display:none;padding:70px 0;}
+  .panel.active{display:block;animation:fade .4s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
   .section-title{text-align:center;font-size:2rem;color:var(--rose-fonce);margin-bottom:14px;}
-  .section-sub{text-align:center;color:var(--texte-doux);max-width:620px;margin:0 auto 50px;}
+  .section-sub{text-align:center;color:var(--texte-doux);max-width:640px;margin:0 auto 50px;}
 
-  /* ===== À PROPOS ===== */
-  .apropos{background:var(--blanc);}
-  .apropos p{max-width:680px;margin:0 auto;text-align:center;font-size:1.08rem;}
+  /* ===== ATELIER ===== */
+  .apropos p{max-width:680px;margin:0 auto 16px;text-align:center;font-size:1.08rem;}
 
   /* ===== GALERIE ===== */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:28px;}
   .card{
-    background:#fff;border-radius:18px;overflow:hidden;
-    box-shadow:0 6px 22px rgba(180,140,150,.12);
-    transition:transform .25s,box-shadow .25s;
+    background:#fff;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:0 6px 22px rgba(180,140,150,.12);transition:transform .25s,box-shadow .25s;
   }
   .card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(180,140,150,.22);}
   .card .img{height:230px;display:flex;align-items:center;justify-content:center;background:var(--beige);}
   .card .img img{width:100%;height:100%;object-fit:cover;}
   .card .img svg{width:90px;height:90px;opacity:.85;}
-  .card .body{padding:18px 20px 22px;}
+  .card .body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column;}
   .card h3{font-size:1.1rem;margin-bottom:6px;}
-  .card p{color:var(--texte-doux);font-size:.92rem;}
+  .card .desc{color:var(--texte-doux);font-size:.92rem;flex:1;}
   .card .prix{display:inline-block;margin-top:12px;color:var(--rose-fonce);font-weight:600;}
+  .badge{display:inline-block;margin-top:12px;font-size:.78rem;font-weight:600;
+    background:var(--menthe);color:#4f7a63;padding:5px 12px;border-radius:20px;align-self:flex-start;}
+  .card .vinted{
+    display:inline-block;margin-top:14px;text-align:center;padding:9px 18px;border-radius:30px;
+    background:var(--rose-fonce);color:#fff;font-weight:600;font-size:.9rem;transition:transform .2s;
+  }
+  .card .vinted:hover{transform:translateY(-2px);}
   .vide{text-align:center;color:var(--texte-doux);grid-column:1/-1;}
 
-  /* ===== CONTACT ===== */
-  .contact{background:linear-gradient(135deg,var(--menthe),var(--lavande));text-align:center;}
-  .contact .section-title,.contact .section-sub{color:var(--texte);}
-  .liens{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
-  .lien{
-    display:inline-flex;align-items:center;gap:10px;
-    background:#fff;padding:14px 28px;border-radius:40px;
-    font-weight:600;color:var(--texte);
-    box-shadow:0 6px 18px rgba(180,140,150,.18);
-    transition:transform .2s;
+  /* ===== FORMULAIRE ===== */
+  .form-box{max-width:620px;margin:0 auto;background:#fff;border-radius:20px;padding:38px 34px;
+    box-shadow:0 8px 28px rgba(180,140,150,.14);}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-weight:600;margin-bottom:7px;font-size:.95rem;}
+  .field input,.field select,.field textarea{
+    width:100%;padding:12px 14px;border:1.5px solid var(--beige);border-radius:12px;
+    font-family:inherit;font-size:1rem;color:var(--texte);background:var(--creme);transition:border .2s;
   }
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--rose-fonce);}
+  .field textarea{resize:vertical;min-height:110px;}
+  .submit{
+    width:100%;padding:15px;border:none;border-radius:30px;cursor:pointer;
+    background:var(--rose-fonce);color:#fff;font-weight:700;font-size:1.05rem;font-family:inherit;
+    box-shadow:0 6px 20px rgba(232,169,176,.4);transition:transform .2s;
+  }
+  .submit:hover{transform:translateY(-2px);}
+  .form-note{text-align:center;color:var(--texte-doux);font-size:.85rem;margin-top:16px;}
+
+  /* ===== LIENS CONTACT ===== */
+  .liens{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:44px;}
+  .lien{display:inline-flex;align-items:center;gap:10px;background:#fff;padding:14px 28px;border-radius:40px;
+    font-weight:600;color:var(--texte);box-shadow:0 6px 18px rgba(180,140,150,.18);transition:transform .2s;}
   .lien:hover{transform:translateY(-2px);}
   .lien svg{width:22px;height:22px;}
 
   /* ===== FOOTER ===== */
   footer{background:var(--texte);color:#fff;text-align:center;padding:34px 24px;font-size:.9rem;}
-  footer .logo{color:var(--rose);font-size:1.3rem;}
+  footer .logo{color:var(--rose);font-size:1.3rem;font-style:italic;}
   .note{font-size:.78rem;color:rgba(255,255,255,.55);margin-top:10px;}
 </style>
 </head>
@@ -109,12 +131,7 @@
 
 <header>
   <nav class="nav wrap">
-    <div class="logo">Créa'Sora</div>
-    <ul>
-      <li><a href="#apropos">L'atelier</a></li>
-      <li><a href="#creations">Créations</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <div class="logo" onclick="showTab('realisations')">Créa'Sora</div>
   </nav>
 </header>
 
@@ -122,34 +139,65 @@
 <section class="hero">
   <h1>Créa'Sora</h1>
   <p>Vêtements et jeux pour bébé en tissu, créés à la main avec douceur et tendresse.</p>
-  <a class="btn" href="#creations">Découvrir les créations</a>
 </section>
 
-<!-- ===== À PROPOS ===== -->
-<section class="apropos" id="apropos">
-  <div class="wrap">
-    <h2 class="section-title">L'atelier</h2>
-    <p class="section-sub">Le fait main, pièce par pièce.</p>
-    <p>Chaque création Créa'Sora est imaginée et cousue à la main, avec des tissus choisis pour leur douceur.
-    Robes, jupes, vêtements et petits jeux d'éveil en tissu : des pièces uniques, pensées pour le confort
-    et l'éveil des tout-petits.</p>
-  </div>
-</section>
+<!-- ===== ONGLETS ===== -->
+<div class="tabs">
+  <button class="tab active" data-tab="realisations" onclick="showTab('realisations')">Réalisations</button>
+  <button class="tab" data-tab="surmesure" onclick="showTab('surmesure')">Sur mesure &amp; commande</button>
+  <button class="tab" data-tab="atelier" onclick="showTab('atelier')">L'atelier</button>
+</div>
 
-<!-- ===== CRÉATIONS (générées automatiquement depuis products.json) ===== -->
-<section id="creations">
+<!-- ===== PANEL : RÉALISATIONS ===== -->
+<section class="panel active" id="realisations">
   <div class="wrap">
-    <h2 class="section-title">Nos créations</h2>
-    <p class="section-sub">Quelques pièces de la collection. De nouvelles arrivent régulièrement !</p>
+    <h2 class="section-title">Nos réalisations</h2>
+    <p class="section-sub">Voici un aperçu de ce qui a déjà été créé. Les pièces disponibles sont en vente sur Vinted ;
+      les autres sont des exemples de ce qui peut être réalisé sur commande.</p>
     <div class="grid" id="grid"><p class="vide">Chargement des créations…</p></div>
   </div>
 </section>
 
-<!-- ===== CONTACT ===== -->
-<section class="contact" id="contact">
+<!-- ===== PANEL : SUR MESURE & COMMANDE ===== -->
+<section class="panel" id="surmesure">
   <div class="wrap">
-    <h2 class="section-title">Commander &amp; nous contacter</h2>
-    <p class="section-sub">Les créations sont en vente sur Vinted. Pour une commande sur mesure ou une question, écrivez-nous !</p>
+    <h2 class="section-title">Une commande sur mesure ?</h2>
+    <p class="section-sub">Une idée, une occasion spéciale, une couleur précise ? Décrivez votre projet,
+      nous revenons vers vous avec plaisir pour en discuter et établir un devis.</p>
+
+    <div class="form-box">
+      <!-- Formulaire Netlify (fonctionne une fois le site déployé sur Netlify) -->
+      <form name="commande" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="commande">
+        <p style="display:none;"><label>Ne pas remplir : <input name="bot-field"></label></p>
+
+        <div class="field">
+          <label for="nom">Votre nom *</label>
+          <input type="text" id="nom" name="nom" required>
+        </div>
+        <div class="field">
+          <label for="email">Votre email *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="field">
+          <label for="type">Type de création souhaitée</label>
+          <select id="type" name="type">
+            <option>Robe</option>
+            <option>Jupe</option>
+            <option>Vêtement bébé</option>
+            <option>Jeu / accessoire en tissu</option>
+            <option>Autre / je ne sais pas encore</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">Décrivez votre projet *</label>
+          <textarea id="message" name="message" placeholder="Taille, couleurs, occasion, délai souhaité…" required></textarea>
+        </div>
+        <button type="submit" class="submit">Envoyer ma demande 🌸</button>
+        <p class="form-note">Réponse sous quelques jours. Aucun engagement : on en discute d'abord ensemble.</p>
+      </form>
+    </div>
+
     <div class="liens">
       <!-- ✏️ Remplacez le # par votre lien Vinted quand le profil sera créé -->
       <a class="lien" href="#" target="_blank" rel="noopener">
@@ -168,20 +216,39 @@
   </div>
 </section>
 
+<!-- ===== PANEL : ATELIER ===== -->
+<section class="panel apropos" id="atelier">
+  <div class="wrap">
+    <h2 class="section-title">L'atelier</h2>
+    <p class="section-sub">Le fait main, pièce par pièce.</p>
+    <p>Chaque création Créa'Sora est imaginée et cousue à la main, avec des tissus choisis pour leur douceur.
+    Robes, jupes, vêtements et petits jeux d'éveil en tissu : des pièces uniques, pensées pour le confort
+    et l'éveil des tout-petits.</p>
+    <p>Envie d'une pièce qui vous ressemble ? Rendez-vous dans l'onglet
+      <strong>« Sur mesure &amp; commande »</strong> pour nous décrire votre idée.</p>
+  </div>
+</section>
+
 <footer>
   <div class="logo">Créa'Sora</div>
   <p>Créations couture faites main 🧵 — © 2026</p>
-  <p class="note">Site vitrine — la vente s'effectue sur Vinted.</p>
+  <p class="note">Les pièces disponibles sont vendues sur Vinted. Commandes sur mesure sur demande.</p>
 </footer>
 
 <script>
-  // Les créations sont chargées depuis products.json (géré via l'admin Decap).
-  // defaultItems sert d'aperçu si products.json n'est pas accessible (ex. ouverture locale du fichier).
+  // ===== Onglets =====
+  function showTab(id){
+    document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === id));
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === id));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ===== Galerie chargée depuis products.json (géré via l'admin Decap) =====
   const defaultItems = [
-    {titre:"Robe bébé", description:"Robe en coton doux, finitions main.", prix:"à partir de 25 €", image:""},
-    {titre:"Jupe", description:"Petite jupe légère, motif pastel.", prix:"à partir de 20 €", image:""},
-    {titre:"Jeu d'éveil en tissu", description:"Doudou / jouet sensoriel cousu main.", prix:"à partir de 15 €", image:""},
-    {titre:"Accessoire bébé", description:"Bavoir, bandeau, petite pièce assortie.", prix:"à partir de 10 €", image:""}
+    {titre:"Robe bébé", description:"Robe en coton doux, finitions main.", prix:"à partir de 25 €", image:"", lien:""},
+    {titre:"Jupe", description:"Petite jupe légère, motif pastel.", prix:"à partir de 20 €", image:"", lien:""},
+    {titre:"Jeu d'éveil en tissu", description:"Doudou / jouet sensoriel cousu main.", prix:"à partir de 15 €", image:"", lien:""},
+    {titre:"Accessoire bébé", description:"Bavoir, bandeau, petite pièce assortie.", prix:"à partir de 10 €", image:"", lien:""}
   ];
   const placeholder = `<svg viewBox="0 0 24 24" fill="none" stroke="#e8a9b0" stroke-width="1.3"><path d="M8 3l4 3 4-3 2 4-3 2v9H9v-9L6 7z"/></svg>`;
   function render(items){
@@ -192,8 +259,11 @@
         <div class="img">${p.image ? `<img src="${p.image}" alt="${p.titre||''}">` : placeholder}</div>
         <div class="body">
           <h3>${p.titre||''}</h3>
-          <p>${p.description||''}</p>
+          <p class="desc">${p.description||''}</p>
           ${p.prix ? `<span class="prix">${p.prix}</span>` : ''}
+          ${p.lien
+            ? `<a class="vinted" href="${p.lien}" target="_blank" rel="noopener">Voir sur Vinted</a>`
+            : `<span class="badge">Exemple — réalisable sur commande</span>`}
         </div>
       </div>`).join('');
   }
