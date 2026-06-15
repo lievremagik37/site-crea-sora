@@ -153,6 +153,10 @@
   }
   .submit:hover{transform:translateY(-2px);}
   .form-note{text-align:center;color:var(--texte-doux);font-size:.85rem;margin-top:16px;}
+  .merci-inline{display:none;text-align:center;padding:14px 8px;}
+  .merci-inline .emoji{font-size:2.6rem;}
+  .merci-inline h3{color:var(--rose-fonce);font-size:1.4rem;margin:10px 0 8px;}
+  .merci-inline p{color:var(--texte-doux);}
 
   /* ===== LIENS CONTACT ===== */
   .liens{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:44px;}
@@ -212,10 +216,13 @@
       nous revenons vers vous avec plaisir pour en discuter et établir un devis.</p>
 
     <div class="form-box">
-      <!-- Formulaire Netlify (fonctionne une fois le site déployé sur Netlify) -->
-      <form name="commande" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/merci.html">
-        <input type="hidden" name="form-name" value="commande">
-        <p style="display:none;"><label>Ne pas remplir : <input name="bot-field"></label></p>
+      <!-- Formulaire Web3Forms (gratuit, envoi par email, indépendant de l'hébergeur) -->
+      <form id="commandeForm" onsubmit="envoyerCommande(event)">
+        <!-- ⚠️ Remplacez par votre clé Web3Forms (gratuite sur web3forms.com) -->
+        <input type="hidden" name="access_key" value="d829b8f0-d66e-476f-965c-bb941473315b">
+        <input type="hidden" name="subject" value="Nouvelle demande de commande — Créa'Sora">
+        <input type="hidden" name="from_name" value="Site Créa'Sora">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
         <div class="field">
           <label for="nom">Votre nom *</label>
@@ -257,6 +264,11 @@
         <button type="submit" class="submit">Envoyer ma demande 🌸</button>
         <p class="form-note">Réponse sous quelques jours. Aucun engagement : on en discute d'abord ensemble.</p>
       </form>
+      <div id="merciInline" class="merci-inline">
+        <div class="emoji">🌸</div>
+        <h3>Merci pour votre demande !</h3>
+        <p>Votre message a bien été envoyé. Nous reviendrons vers vous très vite.</p>
+      </div>
     </div>
 
     <div class="liens">
@@ -347,6 +359,31 @@
   function togglePerso(nom){
     const cb = document.querySelector('input[name="'+nom+'"]');
     document.getElementById(nom+'-text').classList.toggle('show', cb.checked);
+  }
+
+  // ===== Envoi du formulaire via Web3Forms (gratuit, par email) =====
+  function envoyerCommande(e){
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('.submit');
+    const data = Object.fromEntries(new FormData(form).entries());
+    btn.disabled = true; btn.textContent = 'Envoi…';
+    fetch('https://api.web3forms.com/submit', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(data)
+    })
+    .then(r => r.json())
+    .then(res => {
+      if(res.success){
+        form.style.display = 'none';
+        document.getElementById('merciInline').style.display = 'block';
+      } else { throw new Error(res.message || 'échec'); }
+    })
+    .catch(() => {
+      btn.disabled = false; btn.textContent = 'Envoyer ma demande 🌸';
+      alert("Oups, l'envoi a échoué. Réessayez, ou contactez-nous par email.");
+    });
   }
 
   // ===== Données (créations + catalogue) gérées via l'admin Decap =====
