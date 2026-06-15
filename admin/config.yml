@@ -5,7 +5,7 @@
 # ============================================================
 
 backend:
-base_url: https://ton-worker.workers.dev
+base_url: https://decap-auth.tbautre00.workers.dev
   name: github
   repo: lievremagik37/site-crea-sora  # ⚠️ à modifier
   branch: main
