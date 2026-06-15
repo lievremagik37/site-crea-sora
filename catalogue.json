@@ -3,30 +3,56 @@
     {
       "nom": "Robe",
       "modeles": [
-        { "nom": "Robe d'été" },
-        { "nom": "Robe de cérémonie" }
+        {
+          "nom": "Robe d'été"
+        },
+        {
+          "nom": "Robe de cérémonie"
+        }
       ]
     },
     {
       "nom": "Jupe",
       "modeles": [
-        { "nom": "Jupe simple" },
-        { "nom": "Jupe à volants" }
+        {
+          "nom": "Jupe simple"
+        },
+        {
+          "nom": "Jupe à volants"
+        }
       ]
     },
     {
       "nom": "Vêtement bébé",
       "modeles": [
-        { "nom": "Body" },
-        { "nom": "Barboteuse" }
+        {
+          "nom": "Body"
+        },
+        {
+          "nom": "Barboteuse"
+        }
       ]
     },
     {
       "nom": "Jeu / accessoire en tissu",
       "modeles": [
-        { "nom": "Doudou" },
-        { "nom": "Balle d'éveil" },
-        { "nom": "Bavoir" }
+        {
+          "nom": "Doudou"
+        },
+        {
+          "nom": "Balle d'éveil"
+        },
+        {
+          "nom": "Bavoir"
+        }
+      ]
+    },
+    {
+      "nom": "test",
+      "modeles": [
+        {
+          "nom": "test model"
+        }
       ]
     }
   ]
