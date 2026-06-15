@@ -6,7 +6,7 @@
 
 backend:
   name: github
-  repo: lievremagik37/site-crea-sora   # ⚠️ à modifier
+  repo: VOTRE-PSEUDO/VOTRE-DEPOT   # ⚠️ à modifier
   branch: main
 
 # Dossier où sont stockées les photos téléversées
@@ -17,13 +17,15 @@ public_folder: "/images"
 locale: "fr"
 
 collections:
+  # ----- Onglet Réalisations : image de couverture + liste des créations -----
   - name: "boutique"
-    label: "Créations"
+    label: "Réalisations"
     files:
       - name: "creations"
-        label: "Liste des créations"
+        label: "Créations & couverture"
         file: "products.json"
         fields:
+          - { label: "Image de couverture (onglet Réalisations)", name: "couverture", widget: "image", required: false, hint: "Grande image cliquable. Laissez vide pour un fond pastel par défaut." }
           - label: "Créations"
             name: "creations"
             widget: "list"
@@ -35,3 +37,26 @@ collections:
               - { label: "Prix", name: "prix", widget: "string", hint: "ex : à partir de 25 €" }
               - { label: "Photo", name: "image", widget: "image", required: false }
               - { label: "Lien Vinted (si en vente)", name: "lien", widget: "string", required: false, hint: "Collez l'adresse de l'annonce Vinted. Laissez vide si c'est juste un exemple sur commande." }
+
+  # ----- Catalogue du formulaire de commande : familles + modèles -----
+  - name: "catalogue"
+    label: "Catalogue de commande"
+    files:
+      - name: "familles"
+        label: "Familles & modèles"
+        file: "catalogue.json"
+        fields:
+          - label: "Familles"
+            name: "familles"
+            widget: "list"
+            label_singular: "Famille"
+            summary: "{{fields.nom}}"
+            fields:
+              - { label: "Nom de la famille", name: "nom", widget: "string", hint: "ex : Robe, Jupe, Vêtement bébé…" }
+              - label: "Modèles"
+                name: "modeles"
+                widget: "list"
+                label_singular: "Modèle"
+                summary: "{{fields.nom}}"
+                fields:
+                  - { label: "Nom du modèle", name: "nom", widget: "string" }
