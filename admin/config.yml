@@ -5,9 +5,11 @@
 # ============================================================
 
 backend:
+base_url: https://ton-worker.workers.dev
   name: github
   repo: lievremagik37/site-crea-sora  # ⚠️ à modifier
   branch: main
+  
 
 # Dossier où sont stockées les photos téléversées
 media_folder: "images"
