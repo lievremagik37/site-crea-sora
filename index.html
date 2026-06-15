@@ -98,6 +98,40 @@
   .card .vinted:hover{transform:translateY(-2px);}
   .vide{text-align:center;color:var(--texte-doux);grid-column:1/-1;}
 
+  /* ===== COUVERTURE RÉALISATIONS ===== */
+  .cover{
+    position:relative;max-width:760px;margin:0 auto;cursor:pointer;border-radius:24px;overflow:hidden;
+    box-shadow:0 10px 34px rgba(180,140,150,.22);transition:transform .25s,box-shadow .25s;
+    aspect-ratio:16/9;background:linear-gradient(135deg,var(--rose),var(--lavande),var(--menthe));
+  }
+  .cover:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(180,140,150,.3);}
+  .cover img{width:100%;height:100%;object-fit:cover;display:block;}
+  .cover .cover-ph{display:flex;align-items:center;justify-content:center;height:100%;}
+  .cover .cover-ph svg{width:120px;height:120px;opacity:.7;}
+  .cover .cover-cta{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+    padding:26px;background:linear-gradient(to top,rgba(90,74,74,.55),transparent 55%);color:#fff;text-align:center;
+  }
+  .cover .cover-cta strong{font-size:1.4rem;}
+  .cover .cover-cta span{font-size:.95rem;opacity:.95;margin-top:4px;}
+
+  /* ===== POPUP (MODALE) ===== */
+  .modal{
+    display:none;position:fixed;inset:0;z-index:100;background:rgba(90,74,74,.5);
+    backdrop-filter:blur(3px);padding:28px 16px;overflow-y:auto;
+  }
+  .modal.open{display:block;animation:fade .3s ease;}
+  .modal-box{
+    background:var(--creme);max-width:1040px;margin:20px auto;border-radius:24px;
+    padding:34px 28px 44px;box-shadow:0 20px 60px rgba(90,74,74,.35);position:relative;
+  }
+  .modal-close{
+    position:sticky;top:0;float:right;border:none;cursor:pointer;background:var(--rose-fonce);color:#fff;
+    width:42px;height:42px;border-radius:50%;font-size:1.3rem;line-height:1;font-family:inherit;
+    box-shadow:0 4px 14px rgba(232,169,176,.5);
+  }
+  .modal-box h2{text-align:center;color:var(--rose-fonce);font-size:1.7rem;margin-bottom:30px;}
+
   /* ===== FORMULAIRE ===== */
   .form-box{max-width:620px;margin:0 auto;background:#fff;border-radius:20px;padding:38px 34px;
     box-shadow:0 8px 28px rgba(180,140,150,.14);}
@@ -109,6 +143,13 @@
   }
   .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--rose-fonce);}
   .field textarea{resize:vertical;min-height:110px;}
+  /* personnalisation : cases à cocher + zones de texte */
+  .perso-group{background:var(--creme);border:1.5px solid var(--beige);border-radius:14px;padding:18px 18px 6px;margin-bottom:20px;}
+  .perso-group > .perso-title{font-weight:600;font-size:.95rem;margin-bottom:12px;}
+  .check{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-weight:600;cursor:pointer;}
+  .check input{width:20px;height:20px;accent-color:var(--rose-fonce);cursor:pointer;}
+  .perso-text{display:none;margin:0 0 16px 30px;}
+  .perso-text.show{display:block;}
   .submit{
     width:100%;padding:15px;border:none;border-radius:30px;cursor:pointer;
     background:var(--rose-fonce);color:#fff;font-weight:700;font-size:1.05rem;font-family:inherit;
@@ -161,9 +202,14 @@
 <section class="panel active" id="realisations">
   <div class="wrap">
     <h2 class="section-title">Nos réalisations</h2>
-    <p class="section-sub">Voici un aperçu de ce qui a déjà été créé. Les pièces disponibles sont en vente sur Vinted ;
-      les autres sont des exemples de ce qui peut être réalisé sur commande.</p>
-    <div class="grid" id="grid"><p class="vide">Chargement des créations…</p></div>
+    <p class="section-sub">Cliquez sur l'image pour découvrir toutes nos créations. Les pièces disponibles sont en
+      vente sur Vinted ; les autres sont des exemples de ce qui peut être réalisé sur commande.</p>
+    <div class="cover" id="cover" onclick="openGallery()" role="button" tabindex="0">
+      <div class="cover-ph" id="coverPh">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2"><path d="M8 3l4 3 4-3 2 4-3 2v9H9v-9L6 7z"/></svg>
+      </div>
+      <div class="cover-cta"><strong>Voir toutes nos créations</strong><span>Cliquez pour ouvrir la galerie</span></div>
+    </div>
   </div>
 </section>
 
@@ -189,15 +235,30 @@
           <input type="email" id="email" name="email" required>
         </div>
         <div class="field">
-          <label for="type">Type de création souhaitée</label>
-          <select id="type" name="type">
-            <option>Robe</option>
-            <option>Jupe</option>
-            <option>Vêtement bébé</option>
-            <option>Jeu / accessoire en tissu</option>
-            <option>Autre / je ne sais pas encore</option>
+          <label for="famille">Famille de création</label>
+          <select id="famille" name="famille" onchange="majModeles()">
+            <option value="">Chargement…</option>
           </select>
         </div>
+        <div class="field">
+          <label for="modele">Modèle</label>
+          <select id="modele" name="modele">
+            <option value="">— choisissez d'abord une famille —</option>
+          </select>
+        </div>
+
+        <div class="perso-group">
+          <div class="perso-title">Personnalisation (optionnel)</div>
+          <label class="check"><input type="checkbox" name="broderie" value="oui" onchange="togglePerso('broderie')"> Ajouter une broderie</label>
+          <div class="perso-text" id="broderie-text">
+            <input type="text" name="broderie_texte" placeholder="Texte / motif de la broderie (ex : prénom, fleur…)">
+          </div>
+          <label class="check"><input type="checkbox" name="flocage" value="oui" onchange="togglePerso('flocage')"> Ajouter un flocage</label>
+          <div class="perso-text" id="flocage-text">
+            <input type="text" name="flocage_texte" placeholder="Texte / motif du flocage">
+          </div>
+        </div>
+
         <div class="field">
           <label for="message">Décrivez votre projet *</label>
           <textarea id="message" name="message" placeholder="Taille, couleurs, occasion, délai souhaité…" required></textarea>
@@ -238,6 +299,15 @@
   </div>
 </section>
 
+<!-- ===== POPUP GALERIE ===== -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeGallery()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeGallery()" aria-label="Fermer">×</button>
+    <h2>Toutes nos créations</h2>
+    <div class="grid" id="grid"><p class="vide">Chargement des créations…</p></div>
+  </div>
+</div>
+
 <footer>
   <div class="footer-liens">
     <!-- ✏️ Remplacez le # par votre lien Vinted quand le profil sera créé -->
@@ -277,6 +347,17 @@
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
+  // ===== Popup galerie =====
+  function openGallery(){ document.getElementById('modal').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeGallery(){ document.getElementById('modal').classList.remove('open'); document.body.style.overflow=''; }
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeGallery(); });
+
+  // ===== Personnalisation : afficher la zone de texte quand la case est cochée =====
+  function togglePerso(nom){
+    const cb = document.querySelector('input[name="'+nom+'"]');
+    document.getElementById(nom+'-text').classList.toggle('show', cb.checked);
+  }
+
   // ===== Galerie chargée depuis products.json (géré via l'admin Decap) =====
   const defaultItems = [
     {titre:"Robe bébé", description:"Robe en coton doux, finitions main.", prix:"à partir de 25 €", image:"", lien:""},
@@ -301,10 +382,45 @@
         </div>
       </div>`).join('');
   }
+  function setCover(url){
+    if(!url) return;
+    document.getElementById('coverPh').outerHTML = '<img src="'+url+'" alt="Nos créations">';
+  }
   fetch('products.json?' + Date.now())
     .then(r => r.json())
-    .then(data => render(data.creations || []))
+    .then(data => { render(data.creations || []); setCover(data.couverture); })
     .catch(() => render(defaultItems));
+
+  // ===== Catalogue de commande (familles + modèles) géré via l'admin Decap =====
+  let CATALOGUE = [];
+  const defaultCatalogue = [
+    {nom:"Robe", modeles:[{nom:"Robe d'été"},{nom:"Robe de cérémonie"}]},
+    {nom:"Jupe", modeles:[{nom:"Jupe simple"},{nom:"Jupe à volants"}]},
+    {nom:"Vêtement bébé", modeles:[{nom:"Body"},{nom:"Barboteuse"}]},
+    {nom:"Jeu / accessoire en tissu", modeles:[{nom:"Doudou"},{nom:"Balle d'éveil"},{nom:"Bavoir"}]}
+  ];
+  function remplirFamilles(){
+    const sel = document.getElementById('famille');
+    sel.innerHTML = '<option value="">— choisissez une famille —</option>'
+      + CATALOGUE.map(f => `<option value="${f.nom}">${f.nom}</option>`).join('')
+      + '<option value="Autre">Autre / je ne sais pas encore</option>';
+    majModeles();
+  }
+  function majModeles(){
+    const fam = document.getElementById('famille').value;
+    const sel = document.getElementById('modele');
+    const f = CATALOGUE.find(x => x.nom === fam);
+    if(!f || !f.modeles || !f.modeles.length){
+      sel.innerHTML = '<option value="">— choisissez d\'abord une famille —</option>';
+      return;
+    }
+    sel.innerHTML = '<option value="">— choisissez un modèle —</option>'
+      + f.modeles.map(m => `<option value="${m.nom}">${m.nom}</option>`).join('');
+  }
+  fetch('catalogue.json?' + Date.now())
+    .then(r => r.json())
+    .then(data => { CATALOGUE = data.familles || defaultCatalogue; remplirFamilles(); })
+    .catch(() => { CATALOGUE = defaultCatalogue; remplirFamilles(); });
 </script>
 
 </body>
