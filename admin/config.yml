@@ -6,7 +6,7 @@
 
 backend:
   name: github
-  repo: lievremagik37/site-crea-sora  # ⚠️ à modifier
+  repo: VOTRE-PSEUDO/VOTRE-DEPOT   # ⚠️ à modifier
   branch: main
 
 # Dossier où sont stockées les photos téléversées
@@ -17,22 +17,30 @@ public_folder: "/images"
 locale: "fr"
 
 collections:
-  # ----- Onglet Réalisations : image de couverture + liste des créations -----
+  # ----- Onglet Réalisations : créations rangées par famille -----
   - name: "boutique"
     label: "Réalisations"
     files:
       - name: "creations"
-        label: "Créations & couverture"
+        label: "Liste des créations"
         file: "products.json"
         fields:
-          - { label: "Image de couverture (onglet Réalisations)", name: "couverture", widget: "image", required: false, hint: "Grande image cliquable. Laissez vide pour un fond pastel par défaut." }
           - label: "Créations"
             name: "creations"
             widget: "list"
             label_singular: "Création"
-            summary: "{{fields.titre}} — {{fields.prix}}"
+            summary: "{{fields.titre}} ({{fields.famille}})"
             fields:
-              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Titre du modèle", name: "titre", widget: "string" }
+              - label: "Famille (type)"
+                name: "famille"
+                widget: "relation"
+                collection: "catalogue"
+                file: "familles"
+                value_field: "familles.*.nom"
+                search_fields: ["familles.*.nom"]
+                display_fields: ["familles.*.nom"]
+                hint: "Choisissez le type. La création apparaîtra dans la carte de cette famille."
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Prix", name: "prix", widget: "string", hint: "ex : à partir de 25 €" }
               - { label: "Photo", name: "image", widget: "image", required: false }
