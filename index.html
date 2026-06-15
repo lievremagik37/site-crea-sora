@@ -98,22 +98,14 @@
   .card .vinted:hover{transform:translateY(-2px);}
   .vide{text-align:center;color:var(--texte-doux);grid-column:1/-1;}
 
-  /* ===== COUVERTURE RÉALISATIONS ===== */
-  .cover{
-    position:relative;max-width:760px;margin:0 auto;cursor:pointer;border-radius:24px;overflow:hidden;
-    box-shadow:0 10px 34px rgba(180,140,150,.22);transition:transform .25s,box-shadow .25s;
-    aspect-ratio:16/9;background:linear-gradient(135deg,var(--rose),var(--lavande),var(--menthe));
+  /* ===== CARTES FAMILLES (RÉALISATIONS) ===== */
+  .fam-card{cursor:pointer;position:relative;}
+  .fam-card .img{position:relative;}
+  .fam-card .count{
+    position:absolute;top:12px;right:12px;background:rgba(255,255,255,.92);color:var(--rose-fonce);
+    font-size:.78rem;font-weight:700;padding:4px 11px;border-radius:20px;box-shadow:0 2px 8px rgba(180,140,150,.25);
   }
-  .cover:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(180,140,150,.3);}
-  .cover img{width:100%;height:100%;object-fit:cover;display:block;}
-  .cover .cover-ph{display:flex;align-items:center;justify-content:center;height:100%;}
-  .cover .cover-ph svg{width:120px;height:120px;opacity:.7;}
-  .cover .cover-cta{
-    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-    padding:26px;background:linear-gradient(to top,rgba(90,74,74,.55),transparent 55%);color:#fff;text-align:center;
-  }
-  .cover .cover-cta strong{font-size:1.4rem;}
-  .cover .cover-cta span{font-size:.95rem;opacity:.95;margin-top:4px;}
+  .fam-card .voir{display:inline-block;margin-top:12px;color:var(--rose-fonce);font-weight:600;font-size:.9rem;align-self:flex-start;}
 
   /* ===== POPUP (MODALE) ===== */
   .modal{
@@ -202,14 +194,9 @@
 <section class="panel active" id="realisations">
   <div class="wrap">
     <h2 class="section-title">Nos réalisations</h2>
-    <p class="section-sub">Cliquez sur l'image pour découvrir toutes nos créations. Les pièces disponibles sont en
+    <p class="section-sub">Choisissez un type de création pour voir tous les modèles. Les pièces disponibles sont en
       vente sur Vinted ; les autres sont des exemples de ce qui peut être réalisé sur commande.</p>
-    <div class="cover" id="cover" onclick="openGallery()" role="button" tabindex="0">
-      <div class="cover-ph" id="coverPh">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2"><path d="M8 3l4 3 4-3 2 4-3 2v9H9v-9L6 7z"/></svg>
-      </div>
-      <div class="cover-cta"><strong>Voir toutes nos créations</strong><span>Cliquez pour ouvrir la galerie</span></div>
-    </div>
+    <div class="grid" id="famGrid"><p class="vide">Chargement…</p></div>
   </div>
 </section>
 
@@ -303,7 +290,7 @@
 <div class="modal" id="modal" onclick="if(event.target===this)closeGallery()">
   <div class="modal-box">
     <button class="modal-close" onclick="closeGallery()" aria-label="Fermer">×</button>
-    <h2>Toutes nos créations</h2>
+    <h2 id="modalTitle">Nos créations</h2>
     <div class="grid" id="grid"><p class="vide">Chargement des créations…</p></div>
   </div>
 </div>
@@ -358,47 +345,69 @@
     document.getElementById(nom+'-text').classList.toggle('show', cb.checked);
   }
 
-  // ===== Galerie chargée depuis products.json (géré via l'admin Decap) =====
-  const defaultItems = [
-    {titre:"Robe bébé", description:"Robe en coton doux, finitions main.", prix:"à partir de 25 €", image:"", lien:""},
-    {titre:"Jupe", description:"Petite jupe légère, motif pastel.", prix:"à partir de 20 €", image:"", lien:""},
-    {titre:"Jeu d'éveil en tissu", description:"Doudou / jouet sensoriel cousu main.", prix:"à partir de 15 €", image:"", lien:""},
-    {titre:"Accessoire bébé", description:"Bavoir, bandeau, petite pièce assortie.", prix:"à partir de 10 €", image:"", lien:""}
-  ];
-  const placeholder = `<svg viewBox="0 0 24 24" fill="none" stroke="#e8a9b0" stroke-width="1.3"><path d="M8 3l4 3 4-3 2 4-3 2v9H9v-9L6 7z"/></svg>`;
-  function render(items){
-    const grid = document.getElementById('grid');
-    if (!items || !items.length) { grid.innerHTML = '<p class="vide">Les créations arrivent bientôt 🌸</p>'; return; }
-    grid.innerHTML = items.map(p => `
-      <div class="card">
-        <div class="img">${p.image ? `<img src="${p.image}" alt="${p.titre||''}">` : placeholder}</div>
-        <div class="body">
-          <h3>${p.titre||''}</h3>
-          <p class="desc">${p.description||''}</p>
-          ${p.prix ? `<span class="prix">${p.prix}</span>` : ''}
-          ${p.lien
-            ? `<a class="vinted" href="${p.lien}" target="_blank" rel="noopener">Voir sur Vinted</a>`
-            : `<span class="badge">Exemple — réalisable sur commande</span>`}
-        </div>
-      </div>`).join('');
-  }
-  function setCover(url){
-    if(!url) return;
-    document.getElementById('coverPh').outerHTML = '<img src="'+url+'" alt="Nos créations">';
-  }
-  fetch('products.json?' + Date.now())
-    .then(r => r.json())
-    .then(data => { render(data.creations || []); setCover(data.couverture); })
-    .catch(() => render(defaultItems));
-
-  // ===== Catalogue de commande (familles + modèles) géré via l'admin Decap =====
+  // ===== Données (créations + catalogue) gérées via l'admin Decap =====
   let CATALOGUE = [];
+  let CREATIONS = [];
+  let FAMNAMES = [];
   const defaultCatalogue = [
     {nom:"Robe", modeles:[{nom:"Robe d'été"},{nom:"Robe de cérémonie"}]},
     {nom:"Jupe", modeles:[{nom:"Jupe simple"},{nom:"Jupe à volants"}]},
     {nom:"Vêtement bébé", modeles:[{nom:"Body"},{nom:"Barboteuse"}]},
     {nom:"Jeu / accessoire en tissu", modeles:[{nom:"Doudou"},{nom:"Balle d'éveil"},{nom:"Bavoir"}]}
   ];
+  const defaultItems = [
+    {titre:"Robe d'été", famille:"Robe", description:"Robe en coton doux, finitions main.", prix:"à partir de 25 €", image:"", lien:""},
+    {titre:"Jupe à volants", famille:"Jupe", description:"Petite jupe légère, motif pastel.", prix:"à partir de 20 €", image:"", lien:""},
+    {titre:"Doudou lapin", famille:"Jeu / accessoire en tissu", description:"Doudou sensoriel cousu main.", prix:"à partir de 15 €", image:"", lien:""},
+    {titre:"Bavoir brodé", famille:"Jeu / accessoire en tissu", description:"Bavoir coton, motif au choix.", prix:"à partir de 10 €", image:"", lien:""}
+  ];
+  const placeholder = `<svg viewBox="0 0 24 24" fill="none" stroke="#e8a9b0" stroke-width="1.3"><path d="M8 3l4 3 4-3 2 4-3 2v9H9v-9L6 7z"/></svg>`;
+
+  // Carte d'une création (affichée dans le popup)
+  function carteCreation(p){
+    return `<div class="card">
+      <div class="img">${p.image ? `<img src="${p.image}" alt="${p.titre||''}">` : placeholder}</div>
+      <div class="body">
+        <h3>${p.titre||''}</h3>
+        <p class="desc">${p.description||''}</p>
+        ${p.prix ? `<span class="prix">${p.prix}</span>` : ''}
+        ${p.lien
+          ? `<a class="vinted" href="${p.lien}" target="_blank" rel="noopener">Voir sur Vinted</a>`
+          : `<span class="badge">Exemple — réalisable sur commande</span>`}
+      </div>
+    </div>`;
+  }
+
+  // Cartes des familles dans l'onglet Réalisations
+  function renderFamilles(){
+    const grid = document.getElementById('famGrid');
+    FAMNAMES = [];
+    CATALOGUE.forEach(f => { if(f.nom && !FAMNAMES.includes(f.nom)) FAMNAMES.push(f.nom); });
+    CREATIONS.forEach(c => { const f = c.famille || 'Autres'; if(!FAMNAMES.includes(f)) FAMNAMES.push(f); });
+    if(!FAMNAMES.length){ grid.innerHTML = '<p class="vide">Les créations arrivent bientôt 🌸</p>'; return; }
+    grid.innerHTML = FAMNAMES.map((nom,i) => {
+      const items = CREATIONS.filter(c => (c.famille||'Autres') === nom);
+      const img = (items.find(c => c.image) || {}).image || '';
+      const n = items.length;
+      return `<div class="card fam-card" onclick="openFamille(${i})" role="button" tabindex="0">
+        <div class="img">${img ? `<img src="${img}" alt="${nom}">` : placeholder}<span class="count">${n} modèle${n>1?'s':''}</span></div>
+        <div class="body"><h3>${nom}</h3><span class="voir">Voir les modèles →</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  // Ouvre le popup avec les créations de la famille choisie
+  function openFamille(i){
+    const nom = FAMNAMES[i];
+    const items = CREATIONS.filter(c => (c.famille||'Autres') === nom);
+    document.getElementById('modalTitle').textContent = nom;
+    document.getElementById('grid').innerHTML = items.length
+      ? items.map(carteCreation).join('')
+      : '<p class="vide">Bientôt des modèles dans cette catégorie 🌸</p>';
+    openGallery();
+  }
+
+  // ===== Formulaire : familles + modèles en cascade =====
   function remplirFamilles(){
     const sel = document.getElementById('famille');
     sel.innerHTML = '<option value="">— choisissez une famille —</option>'
@@ -417,10 +426,17 @@
     sel.innerHTML = '<option value="">— choisissez un modèle —</option>'
       + f.modeles.map(m => `<option value="${m.nom}">${m.nom}</option>`).join('');
   }
-  fetch('catalogue.json?' + Date.now())
-    .then(r => r.json())
-    .then(data => { CATALOGUE = data.familles || defaultCatalogue; remplirFamilles(); })
-    .catch(() => { CATALOGUE = defaultCatalogue; remplirFamilles(); });
+
+  // ===== Chargement des données =====
+  Promise.all([
+    fetch('products.json?' + Date.now()).then(r => r.json()).catch(() => ({creations:defaultItems})),
+    fetch('catalogue.json?' + Date.now()).then(r => r.json()).catch(() => ({familles:defaultCatalogue}))
+  ]).then(([prod, cat]) => {
+    CREATIONS = (prod && prod.creations && prod.creations.length) ? prod.creations : defaultItems;
+    CATALOGUE = (cat && cat.familles && cat.familles.length) ? cat.familles : defaultCatalogue;
+    renderFamilles();
+    remplirFamilles();
+  });
 </script>
 
 </body>

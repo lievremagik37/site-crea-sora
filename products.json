@@ -1,30 +1,33 @@
 {
-  "couverture": "",
   "creations": [
     {
-      "titre": "Robe bébé",
+      "titre": "Robe d'été",
+      "famille": "Robe",
       "description": "Robe en coton doux, finitions main.",
       "prix": "à partir de 25 €",
       "image": "",
       "lien": ""
     },
     {
-      "titre": "Jupe",
+      "titre": "Jupe à volants",
+      "famille": "Jupe",
       "description": "Petite jupe légère, motif pastel.",
       "prix": "à partir de 20 €",
       "image": "",
       "lien": ""
     },
     {
-      "titre": "Jeu d'éveil en tissu",
-      "description": "Doudou / jouet sensoriel cousu main.",
+      "titre": "Doudou lapin",
+      "famille": "Jeu / accessoire en tissu",
+      "description": "Doudou sensoriel cousu main.",
       "prix": "à partir de 15 €",
       "image": "",
       "lien": ""
     },
     {
-      "titre": "Accessoire bébé",
-      "description": "Bavoir, bandeau, petite pièce assortie.",
+      "titre": "Bavoir brodé",
+      "famille": "Jeu / accessoire en tissu",
+      "description": "Bavoir coton, motif au choix.",
       "prix": "à partir de 10 €",
       "image": "",
       "lien": ""
